@@ -46,17 +46,18 @@ public class World {
 		
 		List<Citizen> citizens = new ArrayList<>();
 		for (int i = 0; i < amountOfHouses * 3 - startInfected; i++) {
-			citizens.add(new Citizen(daysInfected, daysImmune, State.HEALTHY));
+			citizens.add(new Citizen(daysInfected, daysImmune, riskOfDeath, State.HEALTHY));
 		}
 		
 		for (int i = 0; i < startInfected; i++) {
-			citizens.add(new Citizen(daysInfected, daysImmune, State.INFECTED));
+			citizens.add(new Citizen(daysInfected, daysImmune, riskOfDeath, State.INFECTED));
 		}
 		
 		Random random = new Random();
 		
 		for (int day = 0; day < amountOfDays; day++) {
 			if (logFlag) System.out.println("Day " + day);
+			if (logFlag) System.out.println("Dead: " + getPortions(citizens).get(3));
 			// Körs varje dag
 			for (int interval = 0; interval < housesPerDay; interval++) {
 				// Töm husen
@@ -83,18 +84,18 @@ public class World {
 					
 					var totalRiskOfInfection = 1 - Math.pow((1 - riskOfInfection), infectedCitizens.size());
 					
-					if (logFlag) System.out.println("Infected: " + infectedCitizens.size() + ", risk of infection: " + totalRiskOfInfection);
+					//if (logFlag) System.out.println("Infected: " + infectedCitizens.size() + ", risk of infection: " + totalRiskOfInfection);
 					
 					for (var citizen : healthyCitizens) {
 						var a = random.nextDouble();
 						if (a <= totalRiskOfInfection) {
 							citizen.queueInfection();
-							if (logFlag) System.out.println("Queue infection");
+							//if (logFlag) System.out.println("Queue infection");
 						}
 					}
 				}
 				
-				if (logFlag) System.out.println(getPortions(citizens).get(1));
+				//if (logFlag) System.out.println(getPortions(citizens).get(1));
 			}
 			
 			citizens.forEach(citizen -> citizen.update());
@@ -122,7 +123,12 @@ public class World {
 				.filter(citizen -> citizen.getState() == State.IMMUNE)
 				.count() / (float) citizens.size();
 		
-		return Arrays.asList(healthy, infected, immune);
+		float dead = citizens
+				.stream()
+				.filter(citizen -> citizen.getState() == State.DEAD)
+				.count() / (float) citizens.size();
+		
+		return Arrays.asList(healthy, infected, immune, dead);
 	}
 	
 }

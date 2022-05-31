@@ -8,11 +8,13 @@ public class Citizen {
 	
 	private boolean queueInfection = false;
 	private int daysInState = 0;
+	private float riskOfDeath;
 	private State state;
 	
-	public Citizen(int daysInfected, int daysImmune, State startState) {
+	public Citizen(int daysInfected, int daysImmune, float riskOfDeath, State startState) {
 		this.daysInfected = daysInfected;
 		this.daysImmune = daysImmune;
+		this.riskOfDeath = riskOfDeath;
 		this.state = startState;
 	}
 	
@@ -31,10 +33,12 @@ public class Citizen {
 			daysInState = 0;
 		} else if (state == State.INFECTED && daysInState == daysInfected) {
 			Random random = new Random();
-			if (random.nextDouble() < 0.5) {
+			if (random.nextDouble() > riskOfDeath) {
 				state = State.IMMUNE;
-				daysInState = 0;
+			} else {
+				state = State.DEAD;
 			}
+			daysInState = 0;
 		} else if (state == State.IMMUNE && daysInState == daysImmune) {
 			state = State.HEALTHY;
 			daysInState = 0;
@@ -51,6 +55,7 @@ public class Citizen {
 	public static enum State {
 		HEALTHY,
 		INFECTED,
-		IMMUNE;
+		IMMUNE,
+		DEAD;
 	}
 }

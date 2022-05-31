@@ -64,6 +64,7 @@ public class Graph extends Thread {
 	}
 
 	public void upload(Stats stats) {
+		System.out.println(stats);
 		this.stats = stats;
 	}
 	
@@ -84,14 +85,14 @@ public class Graph extends Thread {
 					int xStart = (int) (margin + c * stepWidth);
 					int xEnd = (int) (xStart + stepWidth);
 
-					float[][] colors = { GREEN, RED, GRAY };
+					float[][] colors = { GREEN, RED, GRAY, BLACK };
 
 					var col1 = stats.measures().get(c);
 					var col2 = stats.measures().get(c + 1);
 
 					int y1 = margin, y2 = margin;
 
-					for (int h = 0; h < 3; h++) {
+					for (int h = 0; h < 4; h++) {
 
 						var color = colors[h];
 

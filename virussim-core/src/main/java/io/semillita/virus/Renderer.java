@@ -24,7 +24,7 @@ public class Renderer {
 	private int vaoID;
 	private int vboID;
 
-	private int maxTriangleCount = 20000;
+	private int maxTriangleCount = 30000;
 	// private Vertex[] vertices;
 	private float[] vertices;
 	private Camera camera;

@@ -5,8 +5,6 @@ import static org.lwjgl.opengl.GL30.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.FloatBuffer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
@@ -22,7 +20,7 @@ public class Shader {
 		this.filepath = filepath;
 		try {
 			this.filepath = filepath;
-			String source = new String(Files.readAllBytes(Paths.get(this.getClass().getResource(filepath).toURI())));
+			String source = Files.read(filepath);
 			
 			String[] splitString = source.split("(#type)( )+([a-zA-Z]+)");
 			
@@ -53,8 +51,6 @@ public class Shader {
 		} catch (IOException e) {
 			e.printStackTrace();
 			assert false : "ERROR: Could not open file for shader: '" + filepath + "'";
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
 		}
 	}
 	
